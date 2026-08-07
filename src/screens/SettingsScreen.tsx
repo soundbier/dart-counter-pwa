@@ -48,7 +48,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onBackToHome, pl
         <div className="section-title">Über die App</div>
         <div className="settings-card info-card">
           <div className="info-title">Dart Counter PWA</div>
-          <div className="info-sub">Version 1.0.0 • MVP</div>
           <div className="info-sub">Optimiert für iPhone & Mobile Touch</div>
         </div>
       </div>
