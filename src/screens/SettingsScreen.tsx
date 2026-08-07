@@ -7,12 +7,11 @@ interface Player {
 }
 
 interface SettingsScreenProps {
-  onBack: () => void;
+  onBackToHome: () => void;
   players?: Player[];
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onBackToHome, players = [] }) => {
-  // Fallback, falls (noch) keine echten Spielerdaten übergeben werden
   const displayPlayers = players.length > 0 ? players : [
     { id: '1', name: 'Marie' },
     { id: '2', name: 'Lukas' }
@@ -21,9 +20,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onBackToHome, pl
   return (
     <div className="screen-wrapper">
       <div className="screen-header">
-        <button className="btn-back" onClick={onBack}>← Zurück</button>
+        <button className="btn-back" onClick={onBackToHome}>← Zurück</button>
         <h2 className="screen-title">Einstellungen</h2>
-        <div style={{ flex: 1 }}></div> {/* Unsichtbarer Platzhalter für perfekte Zentrierung */}
+        <div style={{ flex: 1 }}></div>
       </div>
 
       <div className="settings-section">
