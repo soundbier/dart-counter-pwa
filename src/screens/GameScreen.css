@@ -1,0 +1,128 @@
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg);
+  justify-content: space-between;
+}
+
+.game-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.btn-back {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.game-mode-badge {
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--color-surface-elevated);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.players-scoreboard {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  overflow-x: auto;
+}
+
+.player-score-card {
+  flex: 1;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 110px;
+}
+
+.player-score-card.active {
+  border-color: var(--color-primary);
+  background-color: #f0fdf4;
+  box-shadow: 0 2px 8px rgba(27, 139, 79, 0.15);
+}
+
+.player-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-score-card.active .player-name {
+  color: var(--color-primary);
+}
+
+.player-points {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.bust-text {
+  color: var(--color-error);
+  font-size: 22px;
+}
+
+.current-turn-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.active-player-info {
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.throws-display {
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: #f0fdf4;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #bbf7d0;
+}
+
+.winner-announcement {
+  padding: var(--space-2xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  background-color: var(--color-surface);
+  margin: var(--space-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.game-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
