@@ -1,89 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { db } from '../db';
-import { Player } from '../types';
-import './SettingsScreen.css';
+return (
+  <div className="screen-wrapper"> {/* Nutzt das Basis-Layout der Stats */}
+    <div className="screen-header">
+      <button className="btn-back" onClick={onBack}>← Zurück</button>
+      <h2 className="screen-title">Einstellungen</h2>
+      <div style={{ flex: 1 }}></div> {/* Unsichtbarer Platzhalter für perfekte Zentrierung */}
+    </div>
 
-interface SettingsScreenProps {
-  onBackToHome: () => void;
-}
-
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onBackToHome }) => {
-  const [players, setPlayers] = useState<Player[]>([]);
-
-  useEffect(() => {
-    loadPlayers();
-  }, []);
-
-  const loadPlayers = async () => {
-    const allPlayers = await db.players.toArray();
-    setPlayers(allPlayers);
-  };
-
-  const handleDeletePlayer = async (id: string) => {
-    if (window.confirm('Möchtest du diesen Spieler wirklich löschen?')) {
-      await db.players.delete(id);
-      loadPlayers();
-    }
-  };
-
-  const handleClearAllData = async () => {
-    if (window.confirm('ACHTUNG: Alle Spieldaten und Spieler werden unwiderruflich gelöscht! Fortfahren?')) {
-      await db.players.clear();
-      await db.games.clear();
-      loadPlayers();
-      alert('Alle Daten wurden gelöscht.');
-    }
-  };
-
-  return (
-    <div className="settings-screen">
-      <div className="settings-header">
-        <button className="btn-back" onClick={onBackToHome}>← Zurück</button>
-        <h2>Einstellungen</h2>
-        <div style={{ width: 40 }}></div>
-      </div>
-
-      <div className="settings-content">
-        {/* Sektion: Spielerverwaltung */}
-        <div className="settings-section">
-          <h3>Spieler verwalten</h3>
-          {players.length === 0 ? (
-            <p className="settings-hint">Keine Spieler vorhanden.</p>
-          ) : (
-            <div className="settings-player-list">
-              {players.map(player => (
-                <div key={player.id} className="settings-player-item">
-                  <span>{player.name}</span>
-                  <button 
-                    className="btn-delete-player" 
-                    onClick={() => handleDeletePlayer(player.id)}
-                  >
-                    Löschen
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Sektion: Daten & Speicher */}
-        <div className="settings-section">
-          <h3>Daten & Speicher</h3>
-          <button className="btn-danger" onClick={handleClearAllData}>
-            Alle Daten zurücksetzen
-          </button>
-        </div>
-
-        {/* Sektion: App-Info */}
-        <div className="settings-section">
-          <h3>Über die App</h3>
-          <div className="app-info-card">
-            <p><strong>Dart Counter PWA</strong></p>
-            <p className="settings-hint">Version 1.0.0 • MVP</p>
-            <p className="settings-hint">Optimiert für iPhone & Mobile Touch</p>
+    <div className="settings-section">
+      <div className="section-title">Spieler Verwalten</div>
+      <div className="settings-card">
+        {/* Deine Map-Funktion */}
+        {players.map(player => (
+          <div key={player.id} className="settings-item">
+            <span className="player-name">{player.name}</span>
+            <button className="btn-danger-outline">Löschen</button>
           </div>
-        </div>
+        ))}
       </div>
     </div>
-  );
-};
+
+    <div className="settings-section">
+      <div className="section-title">Daten & Speicher</div>
+      <div className="settings-card">
+        <button className="btn-danger-full">Alle Daten zurücksetzen</button>
+      </div>
+    </div>
+
+    <div className="settings-section">
+      <div className="section-title">Über die App</div>
+      <div className="settings-card info-card">
+        <div className="info-title">Dart Counter PWA</div>
+        <div className="info-sub">Version 1.0.0 • MVP</div>
+        <div className="info-sub">Optimiert für iPhone & Mobile Touch</div>
+      </div>
+    </div>
+  </div>
+);
