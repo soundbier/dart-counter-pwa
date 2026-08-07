@@ -1,88 +1,81 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './NumberPad.css';
 
 interface NumberPadProps {
-  onScoreInput: (value: number, isDouble: boolean) => void;
+  onScoreInput: (score: number, isDouble: boolean) => void;
   onDelete: () => void;
+  isDouble?: boolean;
+  isTriple?: boolean;
+  onToggleDouble?: () => void;
+  onToggleTriple?: () => void;
 }
 
-type Multiplier = 1 | 2 | 3;
+export const NumberPad: React.FC<NumberPadProps> = ({
+  onScoreInput,
+  onDelete,
+  isDouble = false,
+  isTriple = false,
+  onToggleDouble,
+  onToggleTriple,
+}) => {
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
-export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete }) => {
-  const [multiplier, setMultiplier] = useState<Multiplier>(1);
-
-  const toggleMultiplier = (selected: 2 | 3) => {
-    if (multiplier === selected) {
-      setMultiplier(1);
-    } else {
-      setMultiplier(selected);
-    }
-  };
-
-  const handleNumberClick = (baseValue: number) => {
-    let isDouble = multiplier === 2;
-    let finalScore = baseValue * multiplier;
-
-    // Spezialfall Bull: 25 x 2 (Double) wird zu 50 (Bulls) -> zählt als Double Bull
-    if (baseValue === 25) {
-      if (multiplier === 2) {
-        finalScore = 50;
-        isDouble = true;
-      } else {
-        finalScore = 25;
-        isDouble = false;
-      }
-    }
-
-    onScoreInput(finalScore, isDouble);
-    setMultiplier(1); // Nach Wurf zurück auf Single
+  const handleNumClick = (num: number) => {
+    let multiplier = 1;
+    if (isDouble) multiplier = 2;
+    if (isTriple) multiplier = 3;
+    onScoreInput(num * multiplier, isDouble);
   };
 
   return (
     <div className="numberpad-container">
-      {/* Multiplikator-Leiste */}
+      {/* Multiplikator-Leiste (Double / Triple) */}
       <div className="multiplier-bar">
         <button 
-          className={`btn-multiplier double ${multiplier === 2 ? 'active' : ''}`}
-          onClick={() => toggleMultiplier(2)}
+          className={`btn-multiplier ${isDouble ? 'active' : ''}`}
+          onClick={onToggleDouble}
         >
           Double (2x)
         </button>
         <button 
-          className={`btn-multiplier triple ${multiplier === 3 ? 'active' : ''}`}
-          onClick={() => toggleMultiplier(3)}
+          className={`btn-multiplier ${isTriple ? 'active' : ''}`}
+          onClick={onToggleTriple}
         >
           Triple (3x)
         </button>
       </div>
 
-      {/* Zahlen-Grid (1 bis 20) */}
+      {/* Das Haupt-Zahlenraster */}
       <div className="number-grid">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((num) => (
-          <button
-            key={num}
+        {numbers.map((num) => (
+          <button 
+            key={num} 
             className="btn-num"
-            onClick={() => handleNumberClick(num)}
+            onClick={() => handleNumClick(num)}
           >
             {num}
           </button>
         ))}
 
-        {/* 0 / Miss */}
-        <button className="btn-num special" onClick={() => handleNumberClick(0)}>
+        {/* Untere Sonder-Buttons: Perfekt aufgeteilt auf die letzten Plätze */}
+        <button 
+          className="btn-num special" 
+          onClick={() => onScoreInput(0, false)}
+        >
           0 / Miss
         </button>
-
-        {/* Bull-Button */}
+        
         <button 
-          className={`btn-num special bull ${multiplier === 2 ? 'bullseye' : ''}`}
-          onClick={() => handleNumberClick(25)}
+          className="btn-num special" 
+          onClick={() => onScoreInput(25, false)}
         >
-          {multiplier === 2 ? '50 (Bulls)' : '25 (Outer)'}
+          25 (Outer)
         </button>
 
-        {/* Löschen */}
-        <button className="btn-num delete" onClick={onDelete}>
+        <button 
+          className="btn-num delete" 
+          onClick={onDelete}
+        >
           ⌫ Löschen
         </button>
       </div>
