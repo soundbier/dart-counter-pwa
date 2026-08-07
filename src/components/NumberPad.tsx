@@ -2,18 +2,15 @@ import React, { useState } from 'react';
 import './NumberPad.css';
 
 interface NumberPadProps {
-  onScoreInput: (value: number) => void;
+  onScoreInput: (value: number, isDouble: boolean) => void;
   onDelete: () => void;
-  onSubmit?: () => void; // Optional für Abwärtskompatibilität mit GameScreen
 }
 
 type Multiplier = 1 | 2 | 3;
 
-export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, onSubmit }) => {
+export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete }) => {
   const [multiplier, setMultiplier] = useState<Multiplier>(1);
-  const [dartCount, setDartCount] = useState<number>(0);
 
-  // Umschalten von Double (2x) oder Triple (3x)
   const toggleMultiplier = (selected: 2 | 3) => {
     if (multiplier === selected) {
       setMultiplier(1);
@@ -23,46 +20,27 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, on
   };
 
   const handleNumberClick = (baseValue: number) => {
+    let isDouble = multiplier === 2;
     let finalScore = baseValue * multiplier;
 
-    // Special Bull Logic (25 x 2 = 50)
+    // Spezialfall Bull: 25 x 2 (Double) wird zu 50 (Bulls) -> zählt als Double Bull
     if (baseValue === 25) {
-      finalScore = multiplier === 2 ? 50 : 25;
+      if (multiplier === 2) {
+        finalScore = 50;
+        isDouble = true;
+      } else {
+        finalScore = 25;
+        isDouble = false;
+      }
     }
 
-    onScoreInput(finalScore);
-    setMultiplier(1);
-
-    const nextCount = dartCount + 1;
-
-    // Nach dem 3. Wurf automatisch abschließen & vibrieren
-    if (nextCount >= 3) {
-      // Haptisches Feedback (leichtes Vibrieren)
-      if ('vibrate' in navigator) {
-        try {
-          navigator.vibrate(40); // 40ms kurzes Feedback
-        } catch {
-          // Fallback falls vom Gerät/Browser blockiert
-        }
-      }
-
-      if (onSubmit) {
-        onSubmit();
-      }
-      setDartCount(0);
-    } else {
-      setDartCount(nextCount);
-    }
-  };
-
-  const handleDelete = () => {
-    onDelete();
-    setDartCount((prev) => Math.max(0, prev - 1));
+    onScoreInput(finalScore, isDouble);
+    setMultiplier(1); // Nach Wurf zurück auf Single
   };
 
   return (
     <div className="numberpad-container">
-      {/* Multiplikator-Leiste (Double & Triple) */}
+      {/* Multiplikator-Leiste */}
       <div className="multiplier-bar">
         <button 
           className={`btn-multiplier double ${multiplier === 2 ? 'active' : ''}`}
@@ -95,7 +73,7 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, on
           0 / Miss
         </button>
 
-        {/* Bull-Button (dynamisch 25 / 50) */}
+        {/* Bull-Button */}
         <button 
           className={`btn-num special bull ${multiplier === 2 ? 'bullseye' : ''}`}
           onClick={() => handleNumberClick(25)}
@@ -104,7 +82,7 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, on
         </button>
 
         {/* Löschen */}
-        <button className="btn-num delete" onClick={handleDelete}>
+        <button className="btn-num delete" onClick={onDelete}>
           ⌫ Löschen
         </button>
       </div>
