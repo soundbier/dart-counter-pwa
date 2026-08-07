@@ -1,39 +1,30 @@
 import React from 'react';
-import './HomeScreen.css';
+import './HomeScreen.css'; // <-- Dieser Import ist entscheidend!
 
-interface HomeScreenProps {
-  onStartNewGame: () => void;
-  onOpenStats: () => void;
-  onOpenSettings: () => void;
-}
-
-export const HomeScreen: React.FC<HomeScreenProps> = ({
-  onStartNewGame,
-  onOpenStats,
-  onOpenSettings,
-}) => {
+export const HomeScreen: React.FC<any> = (props) => {
   return (
-    <div className="home-container">
+    <div className="home-screen">
       <div className="home-header">
-        <div className="logo-icon">🎯</div>
-        <h1>Dart Counter</h1>
-        <p className="subtitle">Professional PWA Experience</p>
+        <div style={{ fontSize: '40px', marginBottom: '8px' }}>🎯</div>
+        <h1 className="home-title">Dart Counter</h1>
+        <p className="home-subtitle">Professional PWA Experience</p>
       </div>
 
-      <div className="home-actions">
-        <button className="btn-primary-home" onClick={onStartNewGame}>
+      <div className="home-menu">
+        {/* Achte darauf, dass dein onClick-Handler hier korrekt heißt, z.B. props.onNewGame oder props.onStartGame */}
+        <button className="btn-menu-primary" onClick={props.onNewGame || props.onStartGame}>
           Neues Spiel
         </button>
-        <button className="btn-secondary-home" onClick={onOpenStats}>
+        <button className="btn-menu-secondary">
           Statistiken
         </button>
-        <button className="btn-secondary-home" onClick={onOpenSettings}>
+        <button className="btn-menu-secondary">
           Einstellungen
         </button>
       </div>
 
       <div className="home-footer">
-        <span>v1.0.0 • MVP</span>
+        v1.0.0 • MVP
       </div>
     </div>
   );
