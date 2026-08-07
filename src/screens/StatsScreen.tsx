@@ -12,12 +12,11 @@ interface Player {
 }
 
 interface StatsScreenProps {
-  onBack: () => void;
+  onBackToHome: () => void;
   players?: Player[];
 }
 
 export const StatsScreen: React.FC<StatsScreenProps> = ({ onBackToHome, players = [] }) => {
-  // Fallback, falls (noch) keine echten Spielerdaten aus der App übergeben werden
   const displayPlayers = players.length > 0 ? players : [
     { id: '1', name: 'Marie', ppd: '0.0', games: 0, wins: 0, highCheckout: 0, totalPoints: 0 },
     { id: '2', name: 'Lukas', ppd: '0.0', games: 0, wins: 0, highCheckout: 0, totalPoints: 0 }
@@ -26,7 +25,7 @@ export const StatsScreen: React.FC<StatsScreenProps> = ({ onBackToHome, players 
   return (
     <div className="screen-wrapper">
       <div className="screen-header">
-        <button className="btn-back" onClick={onBack}>← Zurück</button>
+        <button className="btn-back" onClick={onBackToHome}>← Zurück</button>
         <h2 className="screen-title">Statistiken</h2>
         <button className="btn-action">CSV Export</button>
       </div>
