@@ -11,18 +11,37 @@ interface Player {
 }
 
 interface GameScreenProps {
-  outMode?: 'single' | 'double'; // Standard: 'double'
+  playerIds?: string[];
+  outMode?: 'single' | 'double';
+  startingScore?: number;
   onGameEnd?: () => void;
 }
 
-export const GameScreen: React.FC<GameScreenProps> = ({ outMode = 'double' }) => {
-  const [players, setPlayers] = useState<Player[]>([
-    { id: '1', name: 'Spieler 1', score: 501, legs: 0, sets: 0 },
-    { id: '2', name: 'Spieler 2', score: 501, legs: 0, sets: 0 },
-  ]);
+export const GameScreen: React.FC<GameScreenProps> = ({
+  playerIds,
+  outMode = 'double',
+  startingScore = 501,
+  onGameEnd,
+}) => {
+  // Spieler basierend auf übergebenen IDs initialisieren
+  const [players, setPlayers] = useState<Player[]>(() => {
+    if (playerIds && playerIds.length > 0) {
+      return playerIds.map((id, index) => ({
+        id,
+        name: `Spieler ${index + 1}`,
+        score: startingScore,
+        legs: 0,
+        sets: 0,
+      }));
+    }
+    return [
+      { id: '1', name: 'Spieler 1', score: startingScore, legs: 0, sets: 0 },
+      { id: '2', name: 'Spieler 2', score: startingScore, legs: 0, sets: 0 },
+    ];
+  });
 
   const [activePlayerIndex, setActivePlayerIndex] = useState<number>(0);
-  const [turnStartScore, setTurnStartScore] = useState<number>(501);
+  const [turnStartScore, setTurnStartScore] = useState<number>(startingScore);
   const [turnDarts, setTurnDarts] = useState<number[]>([]);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -33,7 +52,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ outMode = 'double' }) =>
       try {
         navigator.vibrate(pattern);
       } catch {
-        // Fallback
+        // Fallback falls Gerät nicht unterstützt
       }
     }
   };
@@ -43,28 +62,22 @@ export const GameScreen: React.FC<GameScreenProps> = ({ outMode = 'double' }) =>
     const newRemaining = currentPlayer.score - score;
     const isDoubleOut = outMode === 'double';
 
-    // 1. BUST (Überworfen) Prüfungen:
-    // - Punkte unter 0
-    // - Rest 1 bei Double Out (kann nicht ausgecheckt werden)
-    // - Rest 0 ohne Double bei Double Out
+    // 1. BUST (Überworfen) Prüfungen
     const isBust = 
       newRemaining < 0 || 
       (isDoubleOut && newRemaining === 1) || 
       (newRemaining === 0 && isDoubleOut && !isDouble);
 
     if (isBust) {
-      // Bust-Feedback
       triggerVibration([100, 50, 100]);
       setMessage('Bust! (Überworfen)');
 
-      // Score auf Rundenanfang zurücksetzen
       setPlayers((prev) =>
         prev.map((p, idx) =>
           idx === activePlayerIndex ? { ...p, score: turnStartScore } : p
         )
       );
 
-      // Nächster Spieler ist dran
       switchTurn();
       return;
     }
@@ -77,18 +90,18 @@ export const GameScreen: React.FC<GameScreenProps> = ({ outMode = 'double' }) =>
       setPlayers((prev) =>
         prev.map((p, idx) =>
           idx === activePlayerIndex
-            ? { ...p, score: 501, legs: p.legs + 1 }
-            : { ...p, score: 501 }
+            ? { ...p, score: startingScore, legs: p.legs + 1 }
+            : { ...p, score: startingScore }
         )
       );
 
       setTurnDarts([]);
-      setTurnStartScore(501);
+      setTurnStartScore(startingScore);
       return;
     }
 
     // 3. Gültiger Wurf
-    triggerVibration(30); // Sanftes Tipp-Feedback
+    triggerVibration(30);
 
     const nextDarts = [...turnDarts, score];
 
