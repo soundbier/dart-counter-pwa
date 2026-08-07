@@ -1,7 +1,22 @@
-import React from 'react';
-import './HomeScreen.css'; // <-- Dieser Import ist entscheidend!
+import React, { useState } from 'react';
+import './HomeScreen.css';
+import { PlayerModal } from '../components/PlayerModal';
 
-export const HomeScreen: React.FC<any> = (props) => {
+interface HomeScreenProps {
+  // Das ist die Funktion, die von der App.tsx übergeben wird, um das Spiel zu starten
+  onStartGame?: (players: string[]) => void; 
+}
+
+export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleStartGame = (players: string[]) => {
+    setShowModal(false);
+    if (onStartGame) {
+      onStartGame(players);
+    }
+  };
+
   return (
     <div className="home-screen">
       <div className="home-header">
@@ -11,8 +26,8 @@ export const HomeScreen: React.FC<any> = (props) => {
       </div>
 
       <div className="home-menu">
-        {/* Achte darauf, dass dein onClick-Handler hier korrekt heißt, z.B. props.onNewGame oder props.onStartGame */}
-        <button className="btn-menu-primary" onClick={props.onNewGame || props.onStartGame}>
+        {/* Hier öffnen wir jetzt das Modal! */}
+        <button className="btn-menu-primary" onClick={() => setShowModal(true)}>
           Neues Spiel
         </button>
         <button className="btn-menu-secondary">
@@ -26,6 +41,14 @@ export const HomeScreen: React.FC<any> = (props) => {
       <div className="home-footer">
         v1.0.0 • MVP
       </div>
+
+      {/* Das Modal wird nur angezeigt, wenn showModal auf "true" steht */}
+      {showModal && (
+        <PlayerModal 
+          onClose={() => setShowModal(false)} 
+          onStart={handleStartGame} 
+        />
+      )}
     </div>
   );
 };
