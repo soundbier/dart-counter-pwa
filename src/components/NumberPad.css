@@ -4,7 +4,7 @@
   gap: 8px;
   width: 100%;
   flex: 1;
-  min-height: 0; /* Erlaubt dem Container, sich im Flexbox-Layout flexibel zu verkleinern */
+  min-height: 0;
   justify-content: flex-end;
 }
 
@@ -16,7 +16,7 @@
 
 .btn-multiplier {
   flex: 1;
-  background-color: var(--color-bg-card);
+  background-color: var(--color-card);
   color: white;
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-sm);
@@ -44,7 +44,7 @@
 .btn-num {
   font-size: 18px;
   font-weight: bold;
-  background-color: var(--color-bg-card);
+  background-color: var(--color-card);
   color: white;
   border: none;
   border-radius: var(--radius-sm);
@@ -62,15 +62,15 @@
 }
 
 .btn-num.special {
-  background-color: #334155;
+  background-color: var(--color-card-border);
   font-size: 13px;
 }
 
 .btn-num.special.bullseye {
-  background-color: #dc2626;
+  background-color: var(--color-danger);
 }
 
 .btn-num.delete {
-  background-color: #991b1b;
+  background-color: var(--color-danger);
   font-size: 14px;
 }
