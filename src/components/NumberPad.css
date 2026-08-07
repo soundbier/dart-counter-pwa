@@ -1,66 +1,92 @@
-.number-pad {
+.numberpad-container {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  width: 100%;
+  background-color: var(--color-surface);
   padding: var(--space-md);
-  background-color: var(--color-surface-elevated);
   border-top: 1px solid var(--color-border);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.quick-access-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+/* Multiplikator-Leiste oben */
+.multiplier-bar {
+  display: flex;
   gap: var(--space-xs);
 }
 
-.quick-btn {
+.btn-multiplier {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: #f8fafc;
+  color: var(--color-text);
+  transition: all 0.15s ease;
+}
+
+.btn-multiplier.active {
   background-color: var(--color-primary);
   color: white;
-  font-weight: 700;
-  font-size: 18px;
-  padding: var(--space-md) 0;
-  border-radius: var(--radius-md);
+  border-color: var(--color-primary);
 }
 
-.main-pad-grid {
+.btn-multiplier.double.active {
+  background-color: #d97706; /* Orange für Double */
+  border-color: #d97706;
+}
+
+.btn-multiplier.triple.active {
+  background-color: #dc2626; /* Rot für Triple */
+  border-color: #dc2626;
+}
+
+/* Zahlen-Grid */
+.number-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xs);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
 }
 
-.pad-btn {
-  background-color: var(--color-surface);
+.btn-num {
+  background-color: #ffffff;
   border: 1px solid var(--color-border);
-  color: var(--color-text);
-  font-size: 20px;
-  font-weight: 600;
-  padding: 16px 0;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pad-btn:active {
-  background-color: var(--color-border);
-}
-
-.zero-btn {
-  grid-column: span 1;
-}
-
-.action-btn {
+  border-radius: var(--radius-sm);
+  font-size: 18px;
   font-weight: 700;
+  padding: 14px 0;
+  color: var(--color-text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.1s, transform 0.05s;
 }
 
-.delete-btn {
-  background-color: #fee2e2;
-  color: var(--color-error);
+.btn-num:active {
+  background-color: #e2e8f0;
+  transform: scale(0.97);
 }
 
-.submit-btn {
-  background-color: var(--color-success);
+/* Spezielle Buttons */
+.btn-num.special {
+  background-color: #f1f5f9;
+  font-size: 14px;
+}
+
+.btn-num.bull {
+  background-color: #16a34a;
   color: white;
-  grid-column: span 1;
+  border-color: #16a34a;
+}
+
+.btn-num.bullseye {
+  background-color: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.btn-num.delete {
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-size: 14px;
+  border-color: #fecaca;
 }
