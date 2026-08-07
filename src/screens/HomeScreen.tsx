@@ -3,17 +3,22 @@ import './HomeScreen.css';
 import { PlayerModal } from '../components/PlayerModal';
 
 interface HomeScreenProps {
-  // Das ist die Funktion, die von der App.tsx übergeben wird, um das Spiel zu starten
-  onStartGame?: (players: string[]) => void; 
+  onStartNewGame?: (players?: string[]) => void;
+  onOpenStats?: () => void;
+  onOpenSettings?: () => void;
 }
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ 
+  onStartNewGame,
+  onOpenStats,
+  onOpenSettings
+}) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleStartGame = (players: string[]) => {
     setShowModal(false);
-    if (onStartGame) {
-      onStartGame(players);
+    if (onStartNewGame) {
+      onStartNewGame(players);
     }
   };
 
@@ -26,14 +31,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame }) => {
       </div>
 
       <div className="home-menu">
-        {/* Hier öffnen wir jetzt das Modal! */}
         <button className="btn-menu-primary" onClick={() => setShowModal(true)}>
           Neues Spiel
         </button>
-        <button className="btn-menu-secondary">
+        {/* Die neuen Eigenschaften werden hier direkt aufgerufen */}
+        <button className="btn-menu-secondary" onClick={onOpenStats}>
           Statistiken
         </button>
-        <button className="btn-menu-secondary">
+        <button className="btn-menu-secondary" onClick={onOpenSettings}>
           Einstellungen
         </button>
       </div>
@@ -42,11 +47,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame }) => {
         v1.0.0 • MVP
       </div>
 
-      {/* Das Modal wird nur angezeigt, wenn showModal auf "true" steht */}
       {showModal && (
         <PlayerModal 
           onClose={() => setShowModal(false)} 
-          onStart={handleStartGame} 
+          onStartGame={handleStartGame} 
         />
       )}
     </div>
