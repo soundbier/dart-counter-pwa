@@ -43,7 +43,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       </div>
 
       <div className="home-footer">
-        v1.0.1 • MVP
+        v1.0.2 • MVP
       </div>
 
       {/* Das Modal wird jetzt mit allen 3 geforderten Props aufgerufen */}
