@@ -2,27 +2,25 @@ import React, { useState } from 'react';
 import './NumberPad.css';
 
 interface NumberPadProps {
-  onScoreSubmit: (score: number) => void;
-  onBackSpace: () => void;
+  onScoreInput: (value: number) => void;
+  onDelete: () => void;
+  onSubmit: () => void;
 }
 
 type Multiplier = 1 | 2 | 3;
 
-export const NumberPad: React.FC<NumberPadProps> = ({ onScoreSubmit, onBackSpace }) => {
+export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, onSubmit }) => {
   const [multiplier, setMultiplier] = useState<Multiplier>(1);
 
   const handleNumberClick = (baseValue: number) => {
     let finalScore = baseValue * multiplier;
-    // Wenn Bullseye (25) mit Triple geklickt wird, gibt es im Standard-Steeldarts kein Triple-Bull (maximal 50/Double Bull oder 25 Single Bull). 
-    // Wir lassen es logisch zu (25 * 3 = 75), fangen es aber sauber ab falls nötig.
     if (baseValue === 50) {
-      finalScore = 50; // Outer/Inner Bull direkt
+      finalScore = 50;
     } else if (baseValue === 25) {
-      finalScore = 25 * multiplier; // 25 oder 50 (bei Double 25)
+      finalScore = 25 * multiplier;
     }
 
-    onScoreSubmit(finalScore);
-    // Multiplier nach Wurf automatisch auf Single zurücksetzen (optional, sehr komfortabel)
+    onScoreInput(finalScore);
     setMultiplier(1);
   };
 
@@ -74,10 +72,15 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreSubmit, onBackSpace
         </button>
 
         {/* Löschen / Korrektur */}
-        <button className="btn-num delete" onClick={onBackSpace}>
+        <button className="btn-num delete" onClick={onDelete}>
           ⌫ Löschen
         </button>
       </div>
+
+      {/* Bestätigen-Button */}
+      <button className="btn-submit-score" onClick={onSubmit}>
+        Wurf bestätigen
+      </button>
     </div>
   );
 };
