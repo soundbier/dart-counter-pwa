@@ -11,7 +11,7 @@ interface SettingsScreenProps {
   players?: Player[];
 }
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onBack, players = [] }) => {
+export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onBackToHome, players = [] }) => {
   // Fallback, falls (noch) keine echten Spielerdaten übergeben werden
   const displayPlayers = players.length > 0 ? players : [
     { id: '1', name: 'Marie' },
