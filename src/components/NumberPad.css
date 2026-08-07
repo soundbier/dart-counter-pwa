@@ -5,7 +5,7 @@
   width: 100%;
   flex: 1;
   min-height: 0;
-  justify-content: flex-end;
+  margin-top: 6px;
 }
 
 .multiplier-bar {
@@ -17,11 +17,11 @@
 .btn-multiplier {
   flex: 1;
   background-color: var(--color-card);
-  color: white;
-  border: 1px solid var(--color-primary);
+  color: var(--color-text);
+  border: 1px solid var(--color-card-border);
   border-radius: var(--radius-sm);
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -30,11 +30,14 @@
 
 .btn-multiplier.active {
   background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
 }
 
 .number-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  /* 5 Reihen für 1-20 (5 x 4 = 20) + 1 Reihe für die 3 Sonderfelder */
   grid-template-rows: repeat(6, 1fr);
   gap: 6px;
   flex: 1;
@@ -43,10 +46,10 @@
 
 .btn-num {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
   background-color: var(--color-card);
-  color: white;
-  border: none;
+  color: var(--color-text);
+  border: 1px solid var(--color-card-border);
   border-radius: var(--radius-sm);
   cursor: pointer;
   display: flex;
@@ -59,18 +62,24 @@
 
 .btn-num:active {
   background-color: var(--color-primary);
+  color: white;
 }
 
+/* Die 3 Sonderfelder in der letzten Reihe clever verteilt */
 .btn-num.special {
-  background-color: var(--color-card-border);
+  background-color: #334155;
   font-size: 13px;
-}
-
-.btn-num.special.bullseye {
-  background-color: var(--color-danger);
+  font-weight: 600;
+  grid-column: span 1; /* Nehmen je 1 Spalte ein */
 }
 
 .btn-num.delete {
-  background-color: var(--color-danger);
-  font-size: 14px;
+  background-color: #991b1b;
+  color: white;
+  border-color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+  /* Das Löschen-Feld zieht sich über die verbleibenden 2 Spalten rechts, 
+     damit die untere Reihe perfekt symmetrisch und voll ist! */
+  grid-column: span 2; 
 }
