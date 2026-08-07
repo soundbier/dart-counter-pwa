@@ -12,15 +12,21 @@ interface Player {
 
 interface GameScreenProps {
   playerIds?: string[];
+  mode?: any;
   outMode?: 'single' | 'double';
   startingScore?: number;
+  onGameOver?: () => void;
+  onBackToHome?: () => void;
   onGameEnd?: () => void;
 }
 
 export const GameScreen: React.FC<GameScreenProps> = ({
   playerIds,
+  mode,
   outMode = 'double',
   startingScore = 501,
+  onGameOver,
+  onBackToHome,
   onGameEnd,
 }) => {
   // Spieler basierend auf übergebenen IDs initialisieren
@@ -52,7 +58,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       try {
         navigator.vibrate(pattern);
       } catch {
-        // Fallback falls Gerät nicht unterstützt
+        // Fallback falls vom Gerät nicht unterstützt
       }
     }
   };
@@ -97,6 +103,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
       setTurnDarts([]);
       setTurnStartScore(startingScore);
+
+      if (onGameOver) {
+        onGameOver();
+      } else if (onGameEnd) {
+        onGameEnd();
+      }
       return;
     }
 
@@ -143,6 +155,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
   return (
     <div className="game-screen">
+      {onBackToHome && (
+        <button className="btn-back" onClick={onBackToHome}>
+          ← Zurück zum Hauptmenü
+        </button>
+      )}
+
       <div className="player-board">
         {players.map((player, idx) => (
           <div
