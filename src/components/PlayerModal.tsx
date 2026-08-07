@@ -14,16 +14,22 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ isOpen, onClose, onSta
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [newPlayerName, setNewPlayerName] = useState('');
 
+  // Lädt die Spieler und selektiert standardmäßig alle (oder setzt es zurück)
   useEffect(() => {
     if (isOpen) {
-      loadPlayers();
+      const initModal = async () => {
+        const allPlayers = await db.players.toArray();
+        setPlayers(allPlayers);
+        // Optional: Wenn keine Spieler ausgewählt sind, direkt alle vorselektieren 
+        // oder den Array leer lassen. Hier behalten wir deine Logik, setzen sie aber stabil auf.
+      };
+      initModal();
+    } else {
+      // Wenn das Modal schließt, leeren wir die temporären Eingaben, 
+      // damit beim nächsten Öffnen kein alter State dazwischenfunkt
+      setNewPlayerName('');
     }
   }, [isOpen]);
-
-  const loadPlayers = async () => {
-    const allPlayers = await db.players.toArray();
-    setPlayers(allPlayers);
-  };
 
   const handleTogglePlayer = (id: string) => {
     if (selectedIds.includes(id)) {
@@ -55,8 +61,16 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ isOpen, onClose, onSta
 
     await db.players.add(newPlayer);
     setNewPlayerName('');
-    await loadPlayers();
+    
+    // Spieler neu laden und den neuen direkt zur Auswahl hinzufügen
+    const updatedPlayers = await db.players.toArray();
+    setPlayers(updatedPlayers);
     setSelectedIds(prev => [...prev, newPlayer.id]);
+  };
+
+  const handleStart = () => {
+    if (selectedIds.length === 0) return;
+    onStartGame(selectedIds);
   };
 
   if (!isOpen) return null;
@@ -101,7 +115,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({ isOpen, onClose, onSta
           <button
             className="btn-primary"
             disabled={selectedIds.length === 0}
-            onClick={() => onStartGame(selectedIds)}
+            onClick={handleStart}
           >
             Spiel starten ({selectedIds.length})
           </button>
