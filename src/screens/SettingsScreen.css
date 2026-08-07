@@ -1,101 +1,84 @@
-.settings-screen {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: var(--color-bg);
-}
-
-.settings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.settings-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.settings-content {
-  flex: 1;
-  padding: var(--space-lg);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xl);
-}
+/* Header nutzt die gleichen Klassen aus der screen-wrapper Struktur */
 
 .settings-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  margin-bottom: 32px;
 }
 
-.settings-section h3 {
-  font-size: 14px;
+.section-title {
+  font-size: 13px;
   font-weight: 700;
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding-left: 16px;
 }
 
-.settings-player-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+.settings-card {
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
   overflow: hidden;
+  border: 1px solid var(--color-card-border);
 }
 
-.settings-player-item {
+.settings-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-surface);
-  font-weight: 500;
+  padding: 16px;
+  border-bottom: 1px solid var(--color-card-border);
+  background-color: var(--color-card);
 }
 
-.settings-player-item:last-child {
+.settings-item:last-child {
   border-bottom: none;
 }
 
-.btn-delete-player {
-  font-size: 13px;
+.player-name {
+  font-size: 16px;
   font-weight: 600;
-  color: var(--color-error);
-  background-color: #fee2e2;
-  padding: 6px 10px;
+  color: var(--color-text);
+}
+
+.btn-danger-outline {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.btn-danger {
-  background-color: #fee2e2;
-  color: var(--color-error);
-  font-weight: 700;
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
+.btn-danger-full {
+  width: 100%;
+  background-color: transparent;
+  color: var(--color-danger);
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
   text-align: center;
-  border: 1px solid #fecaca;
+  cursor: pointer;
 }
 
-.app-info-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
+.btn-danger-full:active {
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
-.settings-hint {
-  font-size: 13px;
+.info-card {
+  padding: 16px;
+}
+
+.info-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.info-sub {
+  font-size: 14px;
   color: var(--color-text-muted);
+  margin-bottom: 2px;
 }
