@@ -1,0 +1,66 @@
+.number-pad {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-md);
+  background-color: var(--color-surface-elevated);
+  border-top: 1px solid var(--color-border);
+}
+
+.quick-access-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-xs);
+}
+
+.quick-btn {
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  padding: var(--space-md) 0;
+  border-radius: var(--radius-md);
+}
+
+.main-pad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xs);
+}
+
+.pad-btn {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 600;
+  padding: 16px 0;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pad-btn:active {
+  background-color: var(--color-border);
+}
+
+.zero-btn {
+  grid-column: span 1;
+}
+
+.action-btn {
+  font-weight: 700;
+}
+
+.delete-btn {
+  background-color: #fee2e2;
+  color: var(--color-error);
+}
+
+.submit-btn {
+  background-color: var(--color-success);
+  color: white;
+  grid-column: span 1;
+}
