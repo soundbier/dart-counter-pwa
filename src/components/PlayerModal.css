@@ -92,7 +92,7 @@
 
 .btn-cancel {
   flex: 1;
-  background-color: #334155;
+  background-color: var(--color-card-border);
   color: white;
   padding: 12px;
   border-radius: var(--radius-sm);
