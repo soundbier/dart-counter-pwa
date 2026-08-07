@@ -4,18 +4,19 @@ import './NumberPad.css';
 interface NumberPadProps {
   onScoreInput: (value: number) => void;
   onDelete: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void; // Optional für Abwärtskompatibilität mit GameScreen
 }
 
 type Multiplier = 1 | 2 | 3;
 
 export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, onSubmit }) => {
   const [multiplier, setMultiplier] = useState<Multiplier>(1);
+  const [dartCount, setDartCount] = useState<number>(0);
 
   // Umschalten von Double (2x) oder Triple (3x)
   const toggleMultiplier = (selected: 2 | 3) => {
     if (multiplier === selected) {
-      setMultiplier(1); // Bei erneutem Klick deaktivieren -> zurück zu Single
+      setMultiplier(1);
     } else {
       setMultiplier(selected);
     }
@@ -24,20 +25,44 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, on
   const handleNumberClick = (baseValue: number) => {
     let finalScore = baseValue * multiplier;
 
-    // Spezialfall Bull: 25 x 2 (Double) wird zu 50 (Bulls). Bei Triple bleibt es 25 (Standard-Bull).
+    // Special Bull Logic (25 x 2 = 50)
     if (baseValue === 25) {
       finalScore = multiplier === 2 ? 50 : 25;
     }
 
     onScoreInput(finalScore);
-    
-    // Nach jeder Eingabe automatisch wieder auf Single zurücksetzen!
     setMultiplier(1);
+
+    const nextCount = dartCount + 1;
+
+    // Nach dem 3. Wurf automatisch abschließen & vibrieren
+    if (nextCount >= 3) {
+      // Haptisches Feedback (leichtes Vibrieren)
+      if ('vibrate' in navigator) {
+        try {
+          navigator.vibrate(40); // 40ms kurzes Feedback
+        } catch {
+          // Fallback falls vom Gerät/Browser blockiert
+        }
+      }
+
+      if (onSubmit) {
+        onSubmit();
+      }
+      setDartCount(0);
+    } else {
+      setDartCount(nextCount);
+    }
+  };
+
+  const handleDelete = () => {
+    onDelete();
+    setDartCount((prev) => Math.max(0, prev - 1));
   };
 
   return (
     <div className="numberpad-container">
-      {/* Multiplikator-Leiste (nur noch Double & Triple) */}
+      {/* Multiplikator-Leiste (Double & Triple) */}
       <div className="multiplier-bar">
         <button 
           className={`btn-multiplier double ${multiplier === 2 ? 'active' : ''}`}
@@ -70,7 +95,7 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, on
           0 / Miss
         </button>
 
-        {/* Dynamischer Bull-Button: Verwandelt sich bei Double in "50 (Bulls)" */}
+        {/* Bull-Button (dynamisch 25 / 50) */}
         <button 
           className={`btn-num special bull ${multiplier === 2 ? 'bullseye' : ''}`}
           onClick={() => handleNumberClick(25)}
@@ -79,15 +104,10 @@ export const NumberPad: React.FC<NumberPadProps> = ({ onScoreInput, onDelete, on
         </button>
 
         {/* Löschen */}
-        <button className="btn-num delete" onClick={onDelete}>
+        <button className="btn-num delete" onClick={handleDelete}>
           ⌫ Löschen
         </button>
       </div>
-
-      {/* Bestätigen-Button */}
-      <button className="btn-submit-score" onClick={onSubmit}>
-        Wurf bestätigen
-      </button>
     </div>
   );
 };
