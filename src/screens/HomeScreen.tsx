@@ -34,7 +34,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <button className="btn-menu-primary" onClick={() => setShowModal(true)}>
           Neues Spiel
         </button>
-        {/* Die neuen Eigenschaften werden hier direkt aufgerufen */}
         <button className="btn-menu-secondary" onClick={onOpenStats}>
           Statistiken
         </button>
@@ -47,12 +46,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         v1.0.0 • MVP
       </div>
 
-      {showModal && (
-        <PlayerModal 
-          onClose={() => setShowModal(false)} 
-          onStartGame={handleStartGame} 
-        />
-      )}
+      {/* Das Modal wird jetzt mit allen 3 geforderten Props aufgerufen */}
+      <PlayerModal 
+        isOpen={showModal}
+        onClose={() => setShowModal(false)} 
+        onStartGame={handleStartGame} 
+      />
     </div>
   );
 };
